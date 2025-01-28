@@ -15,12 +15,13 @@ public record RegistroCotizacionClient(@NotBlank(message = "{nombre.obligatorio}
                                  BigDecimal porcentajeSpread,
                                  LocalDateTime fechaActualizacion) {
     public RegistroCotizacionClient(String entidad, BigDecimal precioCompra, BigDecimal precioVenta) {
-        this(entidad,
+        this(
+                entidad,
                 precioCompra,
                 precioVenta,
-                precioVenta.subtract(precioCompra), // CALCULO porcentaje SPREAD
+                precioVenta.subtract(precioCompra), // CALCULO SPREAD
                 precioCompra.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : precioVenta.subtract(precioCompra).divide(
-                        precioCompra, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)),
+                        precioCompra, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)), // porcentaje spread
                 LocalDateTime.now() // Se asigna aquí en la creación la fecha donde entra por el DTO los datos, y ya no se modifica!
         );
     }

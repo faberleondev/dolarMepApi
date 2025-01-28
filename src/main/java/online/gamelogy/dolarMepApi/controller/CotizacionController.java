@@ -1,10 +1,11 @@
 package online.gamelogy.dolarMepApi.controller;
 
 import online.gamelogy.dolarMepApi.dto.RegistroCotizacion;
-import online.gamelogy.dolarMepApi.entity.Cotizacion;
+import online.gamelogy.dolarMepApi.model.Cotizacion;
 import online.gamelogy.dolarMepApi.dto.RegistroCotizacionClient;
 import online.gamelogy.dolarMepApi.service.CotizacionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,22 +14,32 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+/*
 //********************************************************************************************
 // AQUI SE ENCUENTRAN TODOS LOS METODOS ENDPOINT QUE EJECUTAREMOS CON CURL, INSOMNIA O POSTMAN
 //********************************************************************************************
+
+SOLID Utilizado: Dependency Inversion
+
+ */
+
 @RestController
 @RequestMapping("/api/cotizaciones")
 public class CotizacionController {
-    @Autowired
-    private CotizacionService cotizacionService;
+//    @Autowired
+    private final CotizacionService cotizacionService;
+
+    public CotizacionController(CotizacionService cotizacionService) {
+        this.cotizacionService = cotizacionService;
+    }
 
     //involucra el metodo http POST, el metodo mas importante!
     @PostMapping("/registrar-cotizacion")
-    public ResponseEntity<Cotizacion> guardarCotizacion(@RequestBody RegistroCotizacionClient registroCotizacionClient) {
+    public ResponseEntity<Cotizacion> guardarCotizacion(@RequestBody RegistroCotizacionClient registroCotizacionClient){
         Cotizacion cotizacion = cotizacionService.guardarCotizacion(registroCotizacionClient);
         return ResponseEntity.ok(cotizacion);
     }
-
+    //Buscar por entidad (NOMBRE DEL BANCO)
     @GetMapping("/registro/{entidad}")
     public ResponseEntity<List<RegistroCotizacion>> obtenerRegistroCotizacion(@PathVariable String entidad) {
         List<Cotizacion> cotizaciones = cotizacionService.obtenerPorEntidad(entidad);
@@ -58,10 +69,10 @@ public class CotizacionController {
         return cotizacion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/entidad/{entidad}")
-    public ResponseEntity<List<Cotizacion>> obtenerPorEntidad(@PathVariable String entidad) {
-        return ResponseEntity.ok(cotizacionService.obtenerPorEntidad(entidad));
-    }
+//    @GetMapping("/entidad/{entidad}")
+//    public ResponseEntity<List<Cotizacion>> obtenerPorEntidad(@PathVariable String entidad) {
+//        return ResponseEntity.ok(cotizacionService.obtenerPorEntidad(entidad));
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Cotizacion> eliminarCotizacion(@PathVariable Long id) {
@@ -75,15 +86,15 @@ public class CotizacionController {
     }
 
     @GetMapping("/buscar/compra")
-    public ResponseEntity<List<RegistroCotizacion>> buscarPorPrecioCompra(@RequestParam BigDecimal precio) {
-        return ResponseEntity.ok(cotizacionService.obtenerPorPrecioCompra(precio));
+    public ResponseEntity<List<RegistroCotizacion>> buscarPorPrecioCompra(@RequestParam BigDecimal precioCompra) {
+        return ResponseEntity.ok(cotizacionService.obtenerPorPrecioCompra(precioCompra));
     }
 
     @GetMapping("/buscar/venta")
     public ResponseEntity<List<RegistroCotizacion>> buscarPorPrecioVenta(@RequestParam BigDecimal precio) {
         return ResponseEntity.ok(cotizacionService.obtenerPorPrecioVenta(precio));
     }
-
+    //METODO ENDPOINT QUE ORDENA DE PRECIO MAS BARATO A MAS CARO
     @GetMapping("/ordenar/compra-venta-asc")
     public ResponseEntity<List<RegistroCotizacion>> obtenerOrdenadosPorCompraVentaAsc() {
         return ResponseEntity.ok(cotizacionService.ordenarPorCompraVentaAsc());
@@ -94,19 +105,6 @@ public class CotizacionController {
         return ResponseEntity.ok(cotizacionService.ordenarPorSpreadDesc());
     }
 }
-    //        DatosRespuestaCotizacion datosRespuestaCotizacion = new DatosRespuestaCotizacion(
-//                cotizacion.getId(),
-//                cotizacion.getEntidad(),
-//                cotizacion.getPrecioCompra(),
-//                cotizacion.getPrecioVenta(),
-//                cotizacion.getFechaActualizacion(LocalDateTime.now()));
-//        System.out.println("Datos cargados correctamente");
-//        // RETURN 201 Creado
-//
-//        // URL donde encontrar al medico
-//        //        URI urlLocalHostMedicoCreado = URI.create("http://localhost:8080/medicos/" + medicos.getId());
-//        URI urlCotizacionCreada = uriComponentsBuilder.path("/entidad/{id}").buildAndExpand(cotizacion.getId()).toUri();
-//        return ResponseEntity.created(urlCotizacionCreada).body(datosRespuestaCotizacion);
 
 //    @PutMapping
 //    @Transactional

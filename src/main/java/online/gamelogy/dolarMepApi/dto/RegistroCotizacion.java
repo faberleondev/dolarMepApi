@@ -12,8 +12,9 @@ public record RegistroCotizacion(
         BigDecimal porcentajeSpread,
         LocalDateTime fechaActualizacion
 ) {
-    public RegistroCotizacion(String entidad, BigDecimal precioCompra, BigDecimal precioVenta, LocalDateTime fechaActualizacion) {
-        this(entidad, precioCompra, precioVenta,
+    public RegistroCotizacion(String entidad, BigDecimal precioCompra,
+                              BigDecimal precioVenta, LocalDateTime fechaActualizacion) {
+        this(entidad.replace(" ", "").toUpperCase(), precioCompra, precioVenta,
                 calcularSpread(precioCompra, precioVenta),
                 calcularPorcentajeSpread(precioCompra, precioVenta),
                 fechaActualizacion);
@@ -24,7 +25,7 @@ public record RegistroCotizacion(
     }
 
     private static BigDecimal calcularPorcentajeSpread(BigDecimal compra, BigDecimal venta) {
-        return (compra.compareTo(BigDecimal.ZERO) == 0) ? BigDecimal.ZERO :
-                calcularSpread(compra, venta).divide(compra, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+        return (compra.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO :
+                calcularSpread(compra, venta).divide(compra, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)));
     }
 }
