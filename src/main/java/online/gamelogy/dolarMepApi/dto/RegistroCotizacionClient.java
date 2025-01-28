@@ -18,7 +18,7 @@ public record RegistroCotizacionClient(@NotBlank(message = "{nombre.obligatorio}
         this(entidad,
                 precioCompra,
                 precioVenta,
-                precioVenta.subtract(precioCompra), // CALCULO procentaje SPREAD
+                precioVenta.subtract(precioCompra), // CALCULO porcentaje SPREAD
                 precioCompra.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO : precioVenta.subtract(precioCompra).divide(
                         precioCompra, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)),
                 LocalDateTime.now() // Se asigna aquí en la creación la fecha donde entra por el DTO los datos, y ya no se modifica!

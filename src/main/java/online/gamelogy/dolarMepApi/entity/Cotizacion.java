@@ -30,10 +30,10 @@ public class Cotizacion {
     @Column(nullable = false)
     private BigDecimal spread;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private BigDecimal porcentajeSpread;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime fechaActualizacion;
 
     public Cotizacion() {}

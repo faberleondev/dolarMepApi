@@ -24,8 +24,9 @@ public class CotizacionController {
 
     //involucra el metodo http POST, el metodo mas importante!
     @PostMapping("/registrar-cotizacion")
-    public ResponseEntity<Cotizacion> guardarCotizacion(@RequestBody Cotizacion cotizacion) {
-        return ResponseEntity.ok(cotizacionService.guardarCotizacion(cotizacion)).toString();
+    public ResponseEntity<Cotizacion> guardarCotizacion(@RequestBody RegistroCotizacionClient registroCotizacionClient) {
+        Cotizacion cotizacion = cotizacionService.guardarCotizacion(registroCotizacionClient);
+        return ResponseEntity.ok(cotizacion);
     }
 
     @GetMapping("/registro/{entidad}")
