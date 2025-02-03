@@ -3,12 +3,11 @@ package online.gamelogy.dolarMepApi.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import online.gamelogy.dolarMepApi.dto.RegistroCotizacionClient;
+import online.gamelogy.dolarMepApi.dto.client.RegistroCotizacionClient;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 // POO Utilizado: Abstraccion y encapsulamiento
 //
@@ -91,13 +90,13 @@ public class Cotizacion {
     }
 
     //El toString personalizado, con el formato de fecha que aún no encontré para LATAM xD
-    @Override
-    public String toString() {
-        return "<<<Cotizacion del Banco/Exchange:>>>" +
-                "\n id interno de la Base de Datos = " + id +
-                ", \n Nombre = '" + entidad + '\'' +
-                " \n Precio de Compra: = $" + precioCompra +
-                " \n Precio de Venta: = $" + precioVenta +
-                " \n Fecha de actualizacion: = " + fechaActualizacion.format(DateTimeFormatter.ISO_DATE_TIME);
-    }
+//    @Override
+//    public String toString() {
+//        return "<<<Cotizacion del Banco/Exchange:>>>" +
+//                "\n id interno de la Base de Datos = " + id +
+//                ", \n Nombre = '" + entidad + '\'' +
+//                " \n Precio de Compra: = $" + precioCompra +
+//                " \n Precio de Venta: = $" + precioVenta +
+//                " \n Fecha de actualizacion: = " + fechaActualizacion.format(DateTimeFormatter.ISO_DATE_TIME);
+//    }
 }

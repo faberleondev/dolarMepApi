@@ -14,7 +14,7 @@ public record RegistroCotizacion(
 ) {
     public RegistroCotizacion(String entidad, BigDecimal precioCompra,
                               BigDecimal precioVenta, LocalDateTime fechaActualizacion) {
-        this(entidad.replace(" ", "").toUpperCase(), precioCompra, precioVenta,
+        this(entidad, precioCompra, precioVenta,
                 calcularSpread(precioCompra, precioVenta),
                 calcularPorcentajeSpread(precioCompra, precioVenta),
                 fechaActualizacion);

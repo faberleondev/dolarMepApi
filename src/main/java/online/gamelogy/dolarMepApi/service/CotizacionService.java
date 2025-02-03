@@ -1,29 +1,37 @@
 package online.gamelogy.dolarMepApi.service;
 import online.gamelogy.dolarMepApi.dto.RegistroCotizacion;
-import online.gamelogy.dolarMepApi.dto.RegistroCotizacionClient;
+import online.gamelogy.dolarMepApi.dto.client.RegistroCotizacionClient;
 import online.gamelogy.dolarMepApi.model.Cotizacion;
 import online.gamelogy.dolarMepApi.repository.CotizacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 // POO Utilzado: Polimorfismo (@Override y overloading, en este caso no se está usando @Overrride)
-// SOLID: Interface Segreggation
+// SOLID: Interface Segregation
 @Service
 public class CotizacionService {
 
-    @Autowired
-    private CotizacionRepository cotizacionRepository;
+//    @Autowired
+    private final CotizacionRepository cotizacionRepository;
+    private DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
+
+    public CotizacionService(CotizacionRepository cotizacionRepository) {
+        this.cotizacionRepository = cotizacionRepository;
+    }
+
 
     @Bean
     public ApplicationRunner actualizarCotizacionesAntiguas(CotizacionRepository cotizacionRepository) {
@@ -54,7 +62,7 @@ public class CotizacionService {
         return cotizacionRepository.findByEntidad(entidad);
     }
 
-    public Cotizacion guardarCotizacion(RegistroCotizacionClient registroCotizacionClient) {
+    public Cotizacion guardarCotizacionManual(RegistroCotizacionClient registroCotizacionClient) {
         Cotizacion cotizacion = new Cotizacion(registroCotizacionClient);
         return cotizacionRepository.save(cotizacion);
     }
@@ -64,6 +72,8 @@ public class CotizacionService {
         cotizacionRepository.deleteById(id);
     }
 
+
+    //
     public List<RegistroCotizacion> obtenerPorPrecioCompra(BigDecimal precioCompra) {
         return cotizacionRepository.findAll().stream()
             .filter(c -> c.getPrecioCompra().compareTo(precioCompra) >= 0) // Busca valores mayores o iguales
@@ -72,19 +82,19 @@ public class CotizacionService {
                     c.getEntidad(),
                     c.getPrecioCompra(),
                     c.getPrecioVenta(),
-                    c.getFechaActualizacion(LocalDateTime.now())))
+                    c.getFechaActualizacion()))
             .collect(Collectors.toList());
     }
 
-    public List<RegistroCotizacion> obtenerPorPrecioVenta(BigDecimal precio) {
+    public List<RegistroCotizacion> obtenerPorPrecioVenta(BigDecimal precioVenta) {
         return cotizacionRepository.findAll().stream()
-                .filter(c -> c.getPrecioVenta().compareTo(precio) >= 0)
+                .filter(c -> c.getPrecioVenta().compareTo(precioVenta) >= 0)
                 .sorted(Comparator.comparing(Cotizacion::getPrecioVenta))
                 .map(c -> new RegistroCotizacion(
                         c.getEntidad(),
                         c.getPrecioCompra(),
                         c.getPrecioVenta(),
-                        c.getFechaActualizacion(LocalDateTime.now())))
+                        c.getFechaActualizacion()))
                 .collect(Collectors.toList());
     }
     //METODO QUE ORDENA DE PRECIO MAS BARATO A MAS CARO
@@ -96,7 +106,7 @@ public class CotizacionService {
                         c.getEntidad(),
                         c.getPrecioCompra(),
                         c.getPrecioVenta(),
-                        c.getFechaActualizacion(LocalDateTime.now())))
+                        c.getFechaActualizacion()))
                 .collect(Collectors.toList());
     }
 
@@ -107,7 +117,7 @@ public class CotizacionService {
                         c.getEntidad(),
                         c.getPrecioCompra(),
                         c.getPrecioVenta(),
-                        c.getFechaActualizacion(LocalDateTime.now())))
+                        c.getFechaActualizacion()))
                 .collect(Collectors.toList());
     }
 }
