@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
     List<Cotizacion> findByEntidad(String entidad);
+    List<Cotizacion> findByBancoIdOrderByFechaActualizacionDesc(Long bancoId);
 }

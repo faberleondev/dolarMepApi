@@ -1,6 +1,7 @@
 package online.gamelogy.dolarMepApi.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import online.gamelogy.dolarMepApi.dto.RegistroCotizacion;
 import online.gamelogy.dolarMepApi.model.Cotizacion;
 import online.gamelogy.dolarMepApi.dto.client.RegistroCotizacionClient;
@@ -21,7 +22,7 @@ import java.util.Optional;
 SOLID Utilizado: Dependency Inversion
 
  */
-
+@Slf4j
 @RestController
 @RequestMapping("/api/cotizaciones")
 public class CotizacionController {

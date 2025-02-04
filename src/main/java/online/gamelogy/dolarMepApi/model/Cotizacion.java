@@ -21,8 +21,8 @@ public class Cotizacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String entidad;
+//    @Column(nullable = false)
+//    private String entidad;
 
     @Column(nullable = false)
     private BigDecimal precioCompra;
@@ -39,13 +39,18 @@ public class Cotizacion {
 
     public Cotizacion() {}
 
+    @ManyToOne
+    @JoinColumn(name = "banco_id")
+    private Banco banco;
+
     public Cotizacion(RegistroCotizacionClient registroCotizacionClient) {
-        this.entidad = registroCotizacionClient.entidad();
+//        this.entidad = registroCotizacionClient.entidad();
         this.precioCompra = registroCotizacionClient.precioCompra();
         this.precioVenta = registroCotizacionClient.precioVenta();
         this.spread = calcularSpread(precioCompra, precioVenta);
         this.porcentajeSpread = calcularPorcentajeSpread(precioCompra, precioVenta);
         this.fechaActualizacion = LocalDateTime.now();
+        this.banco = banco;
     }
 
     private static BigDecimal calcularSpread(BigDecimal compra, BigDecimal venta) {
@@ -61,8 +66,8 @@ public class Cotizacion {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getEntidad() { return entidad; }
-    public void setEntidad(String entidad) { this.entidad = entidad; }
+//    public String getEntidad() { return entidad; }
+//    public void setEntidad(String entidad) { this.entidad = entidad; }
 
     public BigDecimal getPrecioCompra() { return precioCompra; }
     public void setPrecioCompra(BigDecimal precioCompra) { this.precioCompra = precioCompra; }

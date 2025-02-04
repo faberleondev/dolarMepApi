@@ -1,5 +1,9 @@
 package online.gamelogy.dolarMepApi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import online.gamelogy.dolarMepApi.config.LocalDateTimeSerializer;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -10,6 +14,7 @@ public record RegistroCotizacion(
         BigDecimal precioVenta,
         BigDecimal spread,
         BigDecimal porcentajeSpread,
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
         LocalDateTime fechaActualizacion
 ) {
     public RegistroCotizacion(String entidad, BigDecimal precioCompra,
